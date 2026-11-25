@@ -1,0 +1,52 @@
+{
+  "_note": "Hand-written example of an agent submission for the fictional Gridline deck. Used by the no-key demo so the full brief layout can be shown without an API call. It is not model output.",
+  "one_liner": "Gridline sells 15-minute congestion forecasts to electricity distribution network operators so they can connect more heat pumps, EV chargers and solar without new cables.",
+  "metrics": [
+    {"name": "ARR", "value": "GBP 4.2m", "period": "September 2026", "source_ids": ["deck p.3"]},
+    {"name": "ARR", "value": "GBP 3.8m", "period": "September 2026", "source_ids": ["deck p.4"]},
+    {"name": "ARR a year earlier", "value": "GBP 1.6m", "period": "September 2025", "source_ids": ["deck p.3"]},
+    {"name": "Net revenue retention", "value": "135%", "period": null, "source_ids": ["deck p.3"]},
+    {"name": "Gross margin", "value": "78%", "period": null, "source_ids": ["deck p.4"]},
+    {"name": "EBITDA", "value": "-GBP 2.4m", "period": "FY2025", "source_ids": ["deck p.4"]},
+    {"name": "Runway", "value": "20 months", "period": null, "source_ids": ["deck p.4"]},
+    {"name": "Raise", "value": "GBP 25m Series B", "period": null, "source_ids": ["deck p.6"]}
+  ],
+  "competitive_summary": "The deck has no competition slide and never names an alternative. The obvious substitutes are operators building forecasting in-house and grid software vendors adding it to existing products. With 4-6 customers, the moat is unclear.",
+  "competitors": [
+    {"name": "In-house operator data teams", "note": "Inferred substitute, not mentioned in the deck.", "source_ids": []},
+    {"name": "Grid management software vendors", "note": "Inferred substitute, not mentioned in the deck.", "source_ids": []}
+  ],
+  "climate": {
+    "mechanism": "Frees up headroom on existing low-voltage networks so heat pumps and EV chargers can connect sooner, replacing gas boilers and petrol cars.",
+    "abatement_logic": "Connections enabled x emissions saved per heat pump or EV per year. 61,000 connections at roughly 1.5 tCO2e each would be about 90,000 tCO2e, close to the claimed 95,000, but this assumes every connection is additional.",
+    "evidenced": false,
+    "source_ids": ["deck p.5", "https://gridline.example/impact"],
+    "dimensions": [
+      {"dimension": "what", "assessment": "Faster connection of low-carbon heating and transport.", "source_ids": ["deck p.2", "deck p.5"]},
+      {"dimension": "who", "assessment": "Network operators directly; households and fleets connecting low-carbon tech indirectly.", "source_ids": ["deck p.2"]},
+      {"dimension": "how_much", "assessment": "95,000 tCO2e a year claimed using the company's own method, not independently reviewed.", "source_ids": ["deck p.5", "https://gridline.example/impact"]},
+      {"dimension": "contribution", "assessment": "Not addressed: no counterfactual for connections that would have happened anyway.", "source_ids": []},
+      {"dimension": "risk", "assessment": "Not addressed: no discussion of how the estimate could be wrong.", "source_ids": []}
+    ],
+    "suggested_kpis": ["GHG emissions avoided (tCO2e per year)", "Renewable or low-carbon capacity enabled (MW)"],
+    "missing_kpis": ["Renewable or low-carbon capacity enabled (MW)"]
+  },
+  "ratings": [
+    {"criterion_id": "climate_impact", "score": 3, "rationale": "Clear mechanism, but the headline figure is self-assessed and there is no counterfactual.", "source_ids": ["deck p.5", "https://gridline.example/impact"]},
+    {"criterion_id": "revenue_scale", "score": 3, "rationale": "Growing fast (GBP 1.6m to about 4m in a year) but below a typical growth-stage size, and the ARR figure itself is inconsistent.", "source_ids": ["deck p.3", "deck p.4"]},
+    {"criterion_id": "unit_economics", "score": 3, "rationale": "78% gross margin and 135% NRR are strong, but there is no CAC or payback and the customer base is tiny.", "source_ids": ["deck p.3", "deck p.4"]},
+    {"criterion_id": "competitive_position", "score": 1, "rationale": "No competitors or differentiation discussed anywhere.", "source_ids": []},
+    {"criterion_id": "team", "score": 3, "rationale": "Domain founders, but the founding year and headcount don't match the website.", "source_ids": ["deck p.6", "https://gridline.example/about"]},
+    {"criterion_id": "capital_plan", "score": 3, "rationale": "GBP 25m fits the cheque range and has a stated goal (Germany), but no use-of-funds split.", "source_ids": ["deck p.4", "deck p.6"]}
+  ],
+  "inconsistencies": [
+    {"title": "ARR stated two ways for the same month", "detail": "GBP 4.2m on the traction slide vs GBP 3.8m on the financials slide, both for September 2026.", "severity": "high", "source_ids": ["deck p.3", "deck p.4"]},
+    {"title": "Impact figure basis unclear", "detail": "Connections are counted cumulatively 'since launch' but the tCO2e figure is per year, so it's unclear whether the annual figure double counts older connections.", "severity": "medium", "source_ids": ["deck p.5", "https://gridline.example/impact"]}
+  ],
+  "questions": [
+    "Which ARR figure is right for September 2026, and what explains the GBP 0.4m difference?",
+    "Is it 4 or 6 operator customers? Are any of them pilots?",
+    "How concentrated is revenue across the operators?",
+    "What are CAC and sales cycle length for a new network operator?"
+  ]
+}
