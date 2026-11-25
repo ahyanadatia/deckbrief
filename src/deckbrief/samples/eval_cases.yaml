@@ -1,0 +1,21 @@
+# SYNTHETIC eval set: fictional decks written for this repo, labelled by hand.
+# decision = what an investor decided after reading the deck (approve / more_info / pass).
+# expected_flags = what a careful first-pass reader should catch.
+cases:
+  - sample: gridline
+    decision: more_info
+    expected_flags:
+      - inconsistency:arr
+      - inconsistency:customer count
+      - inconsistency:founding year
+      - inconsistency:headcount
+      - gap:competitive_position
+  - sample: brightloop
+    decision: approve
+    expected_flags: []
+  - sample: verdant
+    decision: pass
+    expected_flags:
+      - inconsistency:customer count
+      - gap:unit_economics
+      - gap:capital_plan
