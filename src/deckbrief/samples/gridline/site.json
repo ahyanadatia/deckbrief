@@ -1,0 +1,5 @@
+{
+  "https://gridline.example/": "<html><head><title>Gridline Analytics - congestion forecasting for grids</title></head><body><h1>Connect more low-carbon tech to the grid you already have</h1><p>Gridline helps distribution network operators find headroom on low-voltage networks. We work with 4 grid operator customers in the UK and the Netherlands.</p><a href='/about'>About us</a> <a href='/impact'>Impact</a></body></html>",
+  "https://gridline.example/about": "<html><head><title>About Gridline</title></head><body><h1>About</h1><p>Gridline was founded in 2019 by two power-systems engineers who met at a network operator. Today we are a team of 48 employees in London and Rotterdam.</p></body></html>",
+  "https://gridline.example/impact": "<html><head><title>Impact</title></head><body><h1>Impact</h1><p>Every connection we unlock is a heat pump or EV charger that replaces a gas boiler or a petrol car. We estimate 95,000 tCO2e avoided per year using our own methodology.</p></body></html>"
+}
