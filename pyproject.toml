@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "deckbrief"
+version = "0.1.0"
+description = "First-pass pitch-deck screening: cited investment briefs, inconsistency checks and diligence gaps."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Ahyan Adatia" }]
+dependencies = [
+    "anthropic>=0.40",
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "httpx>=0.27",
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+    "typer>=0.12",
+    "jinja2>=3.1",
+    "pypdf>=4.0",
+    "python-multipart>=0.0.9",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.11", "types-PyYAML>=6.0", "reportlab>=4.0"]
+
+[project.scripts]
+deckbrief = "deckbrief.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/deckbrief"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true

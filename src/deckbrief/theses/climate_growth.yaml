@@ -1,0 +1,86 @@
+# Generic thesis for a climate-focused growth equity fund.
+# Swap this file (or pass --thesis) to screen against different criteria.
+name: Example climate growth-equity thesis
+description: >
+  Post-venture growth companies (Series B and later) in cleaner energy systems, smarter
+  industry and climate resilience (efficiency, resilience and adaptation; hardware is fine).
+  Revenue and product-market fit are proven, the business is profitable or on a clear path to
+  it, and it is scaling across Europe. Typical cheque EUR 5-50m. Impact is judged on net
+  impact using the Five Dimensions of impact (what, who, how much, contribution, risk),
+  tracked with a handful (1-5) of IRIS+-style KPIs per company. These are example criteria
+  based on common practice in climate growth investing, not any particular fund's.
+thresholds:
+  advance: 70   # weighted score out of 100
+  review: 50
+min_coverage: 0.6   # share of criteria weight that needs evidence before a score is trusted
+
+# Candidate impact KPIs, IRIS+-style. The brief suggests which ones fit the company and
+# flags the ones the deck gives no figure for.
+impact_kpis:
+  - GHG emissions avoided (tCO2e per year)
+  - GHG emissions removed (tCO2e per year)
+  - Energy saved (MWh per year)
+  - Renewable or low-carbon capacity enabled (MW)
+  - Materials or waste diverted from landfill (tonnes per year)
+  - Water saved (cubic metres per year)
+
+criteria:
+  - id: climate_impact
+    label: Climate impact
+    weight: 3
+    guidance: >
+      Net impact across the Five Dimensions - what outcome, who benefits, how much (scale,
+      depth, duration), contribution versus what would have happened anyway, and impact
+      risk including principal adverse impacts. Emissions avoided or removed should come
+      with a stated method.
+    evidence_keywords: [tco2e, co2, emission, carbon, abatement, decarbonis, decarboniz, renewable, heat pump]
+    questions:
+      - What is the methodology behind the emissions figure, and has a third party reviewed it?
+      - What is the counterfactual (what would customers do without the product)?
+      - What are the main adverse impacts (manufacturing emissions, materials, end of life)?
+
+  - id: revenue_scale
+    label: Revenue scale and growth
+    weight: 3
+    guidance: >
+      Series B and later. Proven revenue and product-market fit (roughly EUR 5m+ revenue or
+      ARR is typical), growing fast, profitable or on a credible path to profitability.
+    evidence_keywords: [arr, revenue, turnover, recurring, growth]
+    questions:
+      - Can you share monthly revenue for the last 24 months, split by customer?
+      - How much of reported ARR is contracted versus pipeline?
+
+  - id: unit_economics
+    label: Unit economics
+    weight: 2
+    guidance: Gross margin, CAC, payback and retention. Software should be well above 60% gross margin.
+    evidence_keywords: [gross margin, cac, payback, ltv, net revenue retention, nrr, churn]
+    questions:
+      - What are CAC and payback period by customer segment?
+      - What is gross and net revenue retention by cohort?
+
+  - id: competitive_position
+    label: Competitive position
+    weight: 2
+    guidance: Named competitors or substitutes, and a credible reason the company wins.
+    evidence_keywords: [competitor, competition, alternative, versus, moat, differentiat, market share]
+    questions:
+      - Who do you lose deals to, and why?
+      - What would it take for an incumbent to build this?
+
+  - id: team
+    label: Team
+    weight: 1
+    guidance: Relevant founder experience and the ability to scale.
+    evidence_keywords: [founder, ceo, cto, team, employees, engineers]
+    questions:
+      - Which senior hires are planned with this round?
+
+  - id: capital_plan
+    label: Capital plan and runway
+    weight: 1
+    guidance: Size of raise (fits a EUR 5-50m cheque?), use of funds, runway and European expansion plan.
+    evidence_keywords: [raising, use of funds, runway, burn, series, expand]
+    questions:
+      - How is the round split across hiring, product and new markets?
+      - What milestones does this round need to hit before the next raise?
