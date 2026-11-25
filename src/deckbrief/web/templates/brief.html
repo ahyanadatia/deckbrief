@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% from "_cite.html" import cite %}
+{% block title %}{{ b.company }} - deckbrief{% endblock %}
+{% block body %}
+<div class="brief-head">
+  <div>
+    <h1>{{ b.company }}</h1>
+    {% if b.one_liner %}<p class="lede">{{ b.one_liner }}</p>{% endif %}
+    <p class="small muted">
+      {% if b.mode == "live" %}<span class="pill ok">Live agent run &middot; {{ b.model }}</span>
+      {% elif b.mode == "scripted" %}<span class="pill warn">Scripted sample brief (not a live model call)</span>
+      {% else %}<span class="pill off">Rule checks only &middot; agent sections off</span>{% endif %}
+      {{ b.sources|length }} sources &middot; {{ b.elapsed_s }}s &middot; thesis: {{ b.thesis_name }}
+    </p>
+  </div>
+  {% set s = b.score %}
+  <div class="scorebox rec-{{ s.recommendation|replace(' ', '-') }}">
+    <div class="num">{{ s.total if s.total is not none else "&ndash;"|safe }}</div>
+    <div class="rec">{{ s.recommendation }}</div>
+    <div class="small">evidence coverage {{ (s.coverage * 100)|round|int }}%</div>
+  </div>
+</div>
+
+<div class="layout">
+<div class="maincol">
+
+<section class="card">
+  <h2>Inconsistencies <span class="count">{{ b.inconsistencies|length }}</span></h2>
+  {% for i in b.inconsistencies %}
+  <div class="flag sev-{{ i.severity }}">
+    <div><strong>{{ i.title }}</strong> <span class="tag">{{ "rule check" if i.origin == "rule" else "agent" }}</span></div>
+    <div>{{ i.detail }}</div>
+    <div>{{ cite(i.source_ids) }}</div>
+  </div>
+  {% else %}<p class="muted">None found.</p>{% endfor %}
+</section>
+
+<section class="card">
+  <h2>Diligence gaps <span class="count">{{ b.gaps|length }}</span></h2>
+  {% for g in b.gaps %}
+  <div class="gap">
+    <strong>{{ g.label }}</strong> <span class="muted small">{{ g.reason }}</span>
+    <ul>{% for q in g.questions %}<li>{{ q }}</li>{% endfor %}</ul>
+  </div>
+  {% else %}<p class="muted">Every criterion has some evidence.</p>{% endfor %}
+</section>
+
+<section class="card">
+  <h2>Financial metrics <span class="muted small">as reported by the company, not verified</span></h2>
+  {% if b.metrics %}
+  <table class="compact">
+    <tr><th>Metric</th><th>Value</th><th>Period</th><th>Source</th></tr>
+    {% for m in b.metrics %}<tr><td>{{ m.name }}</td><td>{{ m.value }}</td><td>{{ m.period or "" }}</td><td>{{ cite(m.source_ids) }}</td></tr>{% endfor %}
+  </table>
+  {% else %}
+  <p class="muted small">Agent off. Numbers found by the regex extractor:</p>
+  <table class="compact">
+    <tr><th>Metric</th><th>Value</th><th>Line</th><th>Source</th></tr>
+    {% for f in b.figures %}<tr><td>{{ f.metric }}{% if f.period %} <span class="muted small">({{ f.period }})</span>{% endif %}</td><td>{{ f.metric|figure(f.value) }}</td><td class="small">{{ f.raw }}</td><td>{{ cite([f.source_id]) }}</td></tr>{% endfor %}
+  </table>
+  {% endif %}
+</section>
+
+{% if b.competitive_summary %}
+<section class="card">
+  <h2>Competitive position</h2>
+  <p>{{ b.competitive_summary }}</p>
+  {% if b.competitors %}<ul>{% for c in b.competitors %}<li><strong>{{ c.name }}</strong>: {{ c.note }} {{ cite(c.source_ids) }}</li>{% endfor %}</ul>{% endif %}
+</section>
+{% endif %}
+
+{% if b.climate %}{% set c = b.climate %}
+<section class="card">
+  <h2>Climate impact
+    {% if c.evidenced %}<span class="pill ok">evidenced</span>{% else %}<span class="pill warn">unverified</span>{% endif %}</h2>
+  <p><strong>Mechanism.</strong> {{ c.mechanism }} {{ cite(c.source_ids) }}</p>
+  <p><strong>Rough abatement logic.</strong> {{ c.abatement_logic }}</p>
+  <table class="compact">
+    <tr><th>Dimension</th><th>Assessment</th><th>Evidence</th></tr>
+    {% for d in c.dimensions %}<tr class="{{ '' if d.source_ids else 'missing' }}"><td>{{ d.dimension|replace('_', ' ') }}</td><td>{{ d.assessment }}</td>
+      <td>{% if d.source_ids %}{{ cite(d.source_ids) }}{% else %}<span class="tag gapt">gap</span>{% endif %}</td></tr>{% endfor %}
+  </table>
+  <p class="small"><strong>Suggested KPIs:</strong> {{ c.suggested_kpis|join("; ") }}
+  {% if c.missing_kpis %}<br><strong>No figure given for:</strong> {{ c.missing_kpis|join("; ") }}{% endif %}</p>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Thesis fit <span class="muted small">ratings from the agent, weighted score computed in code</span></h2>
+  {% if b.mode == "offline" %}<p class="muted small">Agent off, so there are no ratings and no score. Inconsistencies and gaps above still come from the rule checks.</p>{% endif %}
+  <table class="compact">
+    <tr><th>Criterion</th><th>Weight</th><th>Rating</th><th>Why</th></tr>
+    {% for r in b.score.criteria %}<tr class="{{ '' if r.score is not none else 'missing' }}"><td>{{ r.label }}</td><td>{{ r.weight|int }}</td>
+      <td>{{ (r.score ~ "/5") if r.score is not none else "&ndash;"|safe }}</td><td class="small">{{ r.rationale }} {{ cite(r.source_ids) }}</td></tr>{% endfor %}
+  </table>
+</section>
+
+{% if b.questions %}
+<section class="card"><h2>Questions for a first call</h2>
+  <ol>{% for q in b.questions %}<li>{{ q }}</li>{% endfor %}</ol></section>
+{% endif %}
+
+{% if b.unverified or b.warnings %}
+<section class="card"><h2>Unverified and warnings</h2>
+  <ul class="small">{% for u in b.unverified %}<li>Unverified: {{ u }}</li>{% endfor %}
+  {% for w in b.warnings %}<li>{{ w }}</li>{% endfor %}</ul></section>
+{% endif %}
+
+<section class="card">
+  <h2>Sources</h2>
+  {% for src in b.sources %}
+  <div class="source" id="{{ src.id|anchor }}">
+    <div class="src-head"><strong>{{ src.id }}</strong>
+      {% if src.url %}<a href="{{ src.url }}" target="_blank" rel="noopener">{{ src.label }}</a>{% else %}<span class="muted">{{ src.label }}</span>{% endif %}</div>
+    <pre>{{ src.text }}</pre>
+  </div>
+  {% endfor %}
+</section>
+</div>
+
+<aside class="side">
+  <section class="card sticky" id="decision">
+    <h2>Your decision</h2>
+    <form action="/briefs/{{ b.id }}/decision" method="post">
+      <div class="choices">
+        <label><input type="radio" name="decision" value="approve" required> Approve</label>
+        <label><input type="radio" name="decision" value="more_info"> More info</label>
+        <label><input type="radio" name="decision" value="pass"> Pass</label>
+      </div>
+      <textarea name="notes" rows="4" placeholder="Notes (why, what to ask next)"></textarea>
+      <button type="submit">Save decision</button>
+    </form>
+    {% if decisions %}
+    <h3>Log</h3>
+    <ul class="declog">{% for d in decisions %}<li><span class="tag dec-{{ d.decision }}">{{ d.decision|replace('_', ' ') }}</span>
+      <span class="small muted">{{ d.decided_at|replace('T', ' ')|replace('+00:00', ' UTC') }}</span><br>{{ d.notes }}</li>{% endfor %}</ul>
+    {% endif %}
+    <p class="small"><a href="/briefs/{{ b.id }}/json">Export brief (JSON)</a> &middot; <a href="/history">All decisions</a></p>
+  </section>
+</aside>
+</div>
+{% endblock %}

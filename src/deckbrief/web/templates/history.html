@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <div class="row between"><h2>Screens and decisions</h2><a class="button secondary" href="/history.csv">Export CSV</a></div>
+  <p class="muted small">Every brief with the latest investor decision. Over time this is the labelled data the evals need.</p>
+  <table class="compact">
+    <tr><th>Company</th><th>Screened (UTC)</th><th>Mode</th><th>Score</th><th>Suggested</th><th>Decision</th><th>Notes</th></tr>
+    {% for r in rows %}<tr><td><a href="/briefs/{{ r.id }}">{{ r.company }}</a></td><td class="small">{{ r.created_at[:16]|replace('T', ' ') }}</td>
+      <td>{{ r.mode }}</td><td>{{ r.score if r.score is not none else "" }}</td><td>{{ r.recommendation }}</td>
+      <td>{% if r.decision %}<span class="tag dec-{{ r.decision }}">{{ r.decision|replace('_', ' ') }}</span>{% else %}<span class="muted">none yet</span>{% endif %}</td>
+      <td class="small">{{ r.notes or "" }}</td></tr>
+    {% else %}<tr><td colspan="7" class="muted">Nothing screened yet.</td></tr>{% endfor %}
+  </table>
+</div>
+{% endblock %}

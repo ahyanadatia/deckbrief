@@ -1,0 +1,1 @@
+{% macro cite(ids) %}{% for i in ids %}<a class="cite" href="#{{ i|anchor }}">{% if i.startswith("deck ") %}{{ i }}{% else %}{{ i.split("://")[-1].rstrip("/") }}{% endif %}</a>{% endfor %}{% endmacro %}

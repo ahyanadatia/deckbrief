@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}deckbrief{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/">deckbrief</a>
+    <nav><a href="/">New screen</a><a href="/history">Decisions</a></nav>
+    {% if has_key %}
+      <span class="pill ok" title="Anthropic key found">Agent on &middot; {{ model }}</span>
+    {% else %}
+      <span class="pill off" title="No ANTHROPIC_API_KEY set">No-key mode: agent off, rule checks on</span>
+    {% endif %}
+  </header>
+  <main>{% block body %}{% endblock %}</main>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card narrow">
+  <h2>Screening&hellip;</h2>
+  <ol id="log" class="log"></ol>
+  <p id="err" class="err" hidden></p>
+</div>
+<script>
+const log = document.getElementById("log");
+async function poll() {
+  const r = await fetch("/api/jobs/{{ job_id }}");
+  const j = await r.json();
+  log.innerHTML = j.events.map(e => `<li>${e.replace(/</g, "&lt;")}</li>`).join("");
+  if (j.status === "done") { location.href = "/briefs/" + j.brief_id; return; }
+  if (j.status === "error") { const e = document.getElementById("err"); e.hidden = false; e.textContent = "Failed: " + j.error; return; }
+  setTimeout(poll, 400);
+}
+poll();
+</script>
+{% endblock %}

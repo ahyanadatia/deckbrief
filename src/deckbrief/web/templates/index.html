@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block body %}
+<section class="hero">
+  <h1>First-pass pitch-deck screening</h1>
+  <p class="muted">Upload a deck (and optionally the company website). You get a brief where every claim
+  links to its deck page or URL, numbers that disagree across slides are flagged, and anything the
+  thesis needs but the deck doesn't cover becomes a diligence question. You make the call.</p>
+</section>
+
+<div class="grid2">
+  <form class="card" action="/screen" method="post" enctype="multipart/form-data">
+    <h2>Screen a deck</h2>
+    <label>Pitch deck (PDF)<input type="file" name="deck" accept="application/pdf" required></label>
+    <label>Company website <span class="muted">(optional)</span>
+      <input type="text" name="website" placeholder="https://example.com"></label>
+    <label>Mode
+      <select name="mode">
+        {% if has_key %}<option value="live">Agent + rule checks</option>{% endif %}
+        <option value="offline">Rule checks only (no API call)</option>
+      </select>
+    </label>
+    <button type="submit">Screen deck</button>
+  </form>
+
+  <div class="card">
+    <h2>Try the sample</h2>
+    <p class="muted">Gridline Analytics is a <strong>fictional</strong> company. Its deck has some
+    deliberate mistakes and gaps for the checks to find.</p>
+    <div class="row">
+      <form action="/sample" method="post"><input type="hidden" name="mode" value="scripted">
+        <button type="submit">Run sample (scripted brief)</button></form>
+      <form action="/sample" method="post"><input type="hidden" name="mode" value="offline">
+        <button class="secondary" type="submit">Rule checks only</button></form>
+      {% if has_key %}
+      <form action="/sample" method="post"><input type="hidden" name="mode" value="live">
+        <button class="secondary" type="submit">Live agent run</button></form>
+      {% endif %}
+    </div>
+    <p class="small muted">The scripted brief is a hand-written agent output saved with the sample, so the
+    full layout can be shown without a key. The rule checks always run for real.</p>
+    <a class="small" href="/sample-deck.pdf" target="_blank">Open the sample deck</a>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Thesis: {{ thesis.name }}</h2>
+  <p class="muted small">{{ thesis.description }}</p>
+  <table class="compact">
+    <tr><th>Criterion</th><th>Weight</th><th>What it looks for</th></tr>
+    {% for c in thesis.criteria %}<tr><td>{{ c.label }}</td><td>{{ c.weight|int }}</td><td class="small">{{ c.guidance }}</td></tr>{% endfor %}
+  </table>
+</div>
+
+{% if recent %}
+<div class="card">
+  <h2>Recent</h2>
+  <table class="compact">
+    {% for r in recent %}<tr><td><a href="/briefs/{{ r.id }}">{{ r.company }}</a></td><td>{{ r.mode }}</td>
+      <td>{{ r.recommendation }}</td><td>{{ r.decision or "no decision yet" }}</td></tr>{% endfor %}
+  </table>
+</div>
+{% endif %}
+{% endblock %}
