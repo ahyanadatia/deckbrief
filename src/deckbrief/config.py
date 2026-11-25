@@ -20,7 +20,7 @@ def load_settings() -> Settings:
     _load_dotenv(Path(".env"))
     return Settings(
         api_key=os.environ.get("ANTHROPIC_API_KEY") or None,
-        model=os.environ.get("DECKBRIEF_MODEL", "claude-sonnet-4-5"),
+        model=os.environ.get("DECKBRIEF_MODEL", "claude-sonnet-5-5"),
         data_dir=Path(os.environ.get("DECKBRIEF_DATA_DIR", "./data")),
     )
 

@@ -48,7 +48,7 @@ deckbrief eval [--live]
 
 Docker: `docker build -t deckbrief . && docker run -p 8000:8000 -e ANTHROPIC_API_KEY=... deckbrief`
 
-The model defaults to `claude-sonnet-4-5` and can be changed with `DECKBRIEF_MODEL`.
+The model defaults to `claude-sonnet-5-5` and can be changed with `DECKBRIEF_MODEL`.
 
 ## The thesis file
 
