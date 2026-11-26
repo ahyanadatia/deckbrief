@@ -8,9 +8,9 @@ First-pass screening for pitch decks. Give it a deck PDF (and optionally the com
 
 ## Why I built it
 
-I built this after writing a cover letter about automating first-pass deal screening. It's informed by how screening worked during an investment internship, where a lot of time went on reading decks, pulling out the numbers and checking them against the website before anyone decided whether a company was worth a call. That first read is fairly mechanical, and the bits that matter most (a number that changes between slides, or a section that's missing entirely) are easy to miss on the tenth deck of the day.
+I built this after writing a cover letter about automating first-pass deal screening. It's based on how first-pass screening worked on the TMT desk of my student investment fund and on credit evaluation during my Storfund internship. In both, a lot of time went on reading the material, pulling out the numbers and checking them against the website before anyone decided whether a company was worth a closer look. That first read is fairly mechanical, and the bits that matter most (a number that changes between slides, or a section that's missing entirely) are easy to miss on the tenth deck of the day.
 
-It's a sequel to [dealscreen](https://github.com/ahyanadatia/dealscreen), which screens companies from public registry and web data. This one starts from the deck instead.
+It's a companion project to [dealscreen](https://github.com/ahyanadatia/dealscreen), a separate tool that screens companies from public registry and web data. This one starts from the deck instead.
 
 ## What it does
 
